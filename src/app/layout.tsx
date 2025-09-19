@@ -25,14 +25,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html >
-   <SidebarProvider>
-      <AppSidebar />
-      <main>
-        <SidebarTrigger />
+    <html>
+      <body className={`${geistSans.variable} ${geistMono.variable} bg-black text-white`} >
         {children}
-      </main>
-    </SidebarProvider>
+      </body>
     </html>
   );
 }
