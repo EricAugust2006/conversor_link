@@ -4,8 +4,11 @@ import GetLinks from "@/templates/links/getLinks";
 export default function Home() {
   return (
     <>
-      <Form />
+    <div className="overflow-hidden h-screen w-screen">
+
       <GetLinks/>
+      <Form />
+    </div>
     </>
   );
 }
