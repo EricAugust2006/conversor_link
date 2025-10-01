@@ -51,58 +51,60 @@ export default function Form() {
   }
 
   return (
-    <div className="flex flex-col h-screen w-full flex justify-center items-center">
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col border border-[#001426] p-2 gap-4 bg-[#00050A]"
-      >
-        <section className="">
-          <h1 className="inter-font text-[#0E4999] text-xl font-bold">
-            Conversor de Links
-          </h1>
-          <p className="text-sm font-semibold inter-font text-[#323238]">
-            Coloque o nome do link e um codigo aleatório para ele
-          </p>
-        </section>
-
-        <span className="block w-full h-[.5px] bg-[#27272E]" />
-
-        <section className="w-full">
-          <Input
-            required
-            onChange={(e) => setData({ ...data, linkOriginal: e.target.value })}
-            value={data.linkOriginal}
-            placeholder="Nome do link original"
-          />
-          <section className="flex items-center gap-2 mt-4">
-            <Input
-              required
-              onChange={(e) =>
-                setData({ ...data, linkNomeEncurtar: e.target.value })
-              }
-              value={data.linkNomeEncurtar}
-              placeholder="Nome do Link: ex: link"
-            />
-            /
-            <Input
-              required
-              onChange={(e) =>
-                setData({ ...data, codeEncurtar: e.target.value })
-              }
-              value={data.codeEncurtar}
-              placeholder="Código: ex: 123"
-            />
-          </section>
-        </section>
-
-        <button
-          disabled={loading}
-          type="submit"
-          className="bg-[#082040] text-[#949494] p-2 rounded-md cursor-pointer transition-all duration-300 easy-in-out hover:bg-[#01294D] hover:scale-101 hover:text-white "
+      <div className="flex flex-col h-screen w-full flex justify-center items-center">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col border border-[#001426] p-2 gap-4 bg-[#00050A]"
         >
-          {loading ? "Gerando link..." : "Gerar link"}
-        </button>
-      </form>
-    </div>
+          <section className="">
+            <h1 className="inter-font text-[#0E4999] text-xl font-bold">
+              Conversor de Links
+            </h1>
+            <p className="text-sm font-semibold inter-font text-[#323238]">
+              Coloque o nome do link e um codigo aleatório para ele
+            </p>
+          </section>
+
+          <span className="block w-full h-[.5px] bg-[#27272E]" />
+
+          <section className="w-full">
+            <Input
+              required
+              onChange={(e) =>
+                setData({ ...data, linkOriginal: e.target.value })
+              }
+              value={data.linkOriginal}
+              placeholder="Nome do link original"
+            />
+            <section className="flex items-center gap-2 mt-4">
+              <Input
+                required
+                onChange={(e) =>
+                  setData({ ...data, linkNomeEncurtar: e.target.value })
+                }
+                value={data.linkNomeEncurtar}
+                placeholder="Nome do Link: ex: link"
+              />
+              /
+              <Input
+                required
+                onChange={(e) =>
+                  setData({ ...data, codeEncurtar: e.target.value })
+                }
+                value={data.codeEncurtar}
+                placeholder="Código: ex: 123"
+              />
+            </section>
+          </section>
+
+          <button
+            disabled={loading}
+            type="submit"
+            className="bg-[#082040] text-[#949494] p-2 rounded-md cursor-pointer transition-all duration-300 easy-in-out hover:bg-[#01294D] hover:scale-101 hover:text-white "
+          >
+            {loading ? "Gerando link..." : "Gerar link"}
+          </button>
+        </form>
+      </div>
   );
 }

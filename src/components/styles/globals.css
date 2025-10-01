@@ -120,3 +120,25 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Customização para Webkit (Chrome, Safari) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Largura da barra */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #374151; /* Cor de fundo da trilha (gray-700) */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #4b5563; /* Cor do "polegar" (gray-600) */
+  border-radius: 10px;
+  border: 2px solid #374151; /* Borda para deixar o "polegar" mais fino */
+}
+
+/* Customização para Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin; /* 'auto' ou 'thin' */
+  scrollbar-color: #4b5563 #374151; /* Cor do polegar e da trilha */
+}

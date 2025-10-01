@@ -8,12 +8,17 @@ interface Link {
   shortedCode: string;
 }
 
-export default function GetLinks() {
-  const [link, setLinks] = useState<Link[]>([]);
+type GetLinksProps = {
+  close: () => void;
+};
 
+export const GetLinks: React.FC<GetLinksProps> = ({ close }) => {
+  const [link, setLinks] = useState<Link[]>([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     async function LinksList() {
       try {
+        setLoading(true);
         const res = await fetch("/api/url", {
           method: "GET",
           headers: {
@@ -28,6 +33,9 @@ export default function GetLinks() {
         setLinks(Array.isArray(data.links) ? data.links : []);
       } catch (error) {
         console.error("Erro ao buscar links:", error);
+        setLinks([]);
+      } finally {
+        setLoading(false);
       }
     }
     LinksList();
@@ -35,34 +43,45 @@ export default function GetLinks() {
 
   return (
     <>
-      <div className="bg-red-500 ">
-        <section className="flex flex-col gap-4">
-          <h1 className="text-2xl font-bold">Links Encurtados</h1>
-          <div className="flex flex-col">
-            {link.length === 0 ? (
-              <p className="text-2xl text-white ">Não há links encurtados</p>
+      <div className="bg-gray-800 p-4 md:p-6 lg:p-8">
+        <section className="flex flex-col gap-4 md:gap-6 max-w-xl md:max-w-2xl lg:max-w-4xl mx-auto">
+            <button onClick={close}>X</button>
+          <h1 className="text-white text-2xl md:text-3xl font-bold">
+            LINKS
+          </h1>
+          <div className="flex flex-col gap-4 overflow-y-auto max-h-[70vh] custom-scrollbar">
+            {loading ? (
+              <p className="text-xl text-white">Carregando links...</p>
+            ) : link.length === 0 ? (
+              <p className="text-xl text-white">Não há links encurtados</p>
             ) : (
               link.map((link) => (
-                <div key={link.id}>
-                  <p className="text-sm text-muted-foreground dark:text-muted-foreground  ">
-                    {link.original}
+                <div key={link.id} className="p-3 md:p-4 bg-white/10 break-words shadow-md rounded  ">
+                  <p className="text-sm md:text-base text-gray-200 mb-1">
+                    **Original**: {link.original}
                   </p>
-                  Encurtado:{" "}
-                  {/* <a
-                      className="text-sm text-muted-foreground dark:text-muted-foreground "
-                      href={link.original}
-                    >
-                      {link.shortedNameLink}/{link.shortedCode}
-                    </a> */}
-                  {link.original.includes("https://") ? (
-                    <a href={link.original}>
-                      https://{link.shortedNameLink}/{link.shortedCode}
-                    </a>
-                  ) : (
-                    <a href={link.original}>
-                      http://{link.shortedNameLink}/{link.shortedCode}
-                    </a>
-                  )}
+                  <p className="text-white text-base md:text-lg">
+                    Encurtado:{" "}
+                    {link.original.includes("https://") ? (
+                      <a
+                        href={link.original}
+                        className="text-blue-300 underline hover:text-blue-200 transition-colors"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        https://{link.shortedNameLink}/{link.shortedCode}
+                      </a>
+                    ) : (
+                      <a
+                        href={link.original}
+                        className="text-blue-300 underline hover:text-blue-200 transition-colors"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        http://{link.shortedNameLink}/{link.shortedCode}
+                      </a>
+                    )}
+                  </p>
                 </div>
               ))
             )}
@@ -71,4 +90,4 @@ export default function GetLinks() {
       </div>
     </>
   );
-}
+};
