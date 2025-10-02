@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    const links = await prisma.link.findMany(); 
+    const links = await prisma.link.findMany();
 
     return NextResponse.json({ links }, { status: 200 });
   } catch (err) {
@@ -42,5 +42,27 @@ export async function GET(request: NextRequest) {
       { error: "Erro ao buscar link: Internal Server Error" },
       { status: 500 }
     );
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json("Link Invalido", { status: 400 });
+    }
+
+    const link = await prisma.link.delete({
+      where: {
+        id: id,
+      },
+    });
+    console.log("Link deletado:", link);
+    return NextResponse.json(link, { status: 200 });
+  } catch (err) {
+    console.error("Erro ao deletar link", err);
+    return NextResponse.json("Link Invalido", { status: 400 });
   }
 }

@@ -1,4 +1,5 @@
-import { Calendar, Home, Inbox, Search, Settings, Link } from "lucide-react";
+"use client";
+import { Link, X, Search } from "lucide-react";
 
 import {
   Sidebar,
@@ -15,8 +16,62 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from "@radix-ui/react-dropdown-menu";
+import { useState, useEffect } from "react";
+
+import { FileWarning } from "lucide-react";
+
+interface LinkItem {
+  id: string;
+  original: string;
+  shortedNameLink: string;
+  shortedCode: string;
+}
 
 export function AppSidebar() {
+  const [links, setLinks] = useState<LinkItem[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    async function LinksList() {
+      try {
+        setLoading(true);
+        const res = await fetch("/api/url", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!res.ok) throw new Error("Erro ao buscar links");
+
+        const data = await res.json();
+        setLinks(Array.isArray(data.links) ? data.links : []);
+      } catch (error) {
+        console.error("Erro ao buscar links:", error);
+        setLinks([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    LinksList();
+  }, []);
+
+  async function DeleteLink(id: string) {
+    try {
+      const res = await fetch(`/api/url?id=${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) throw new Error("Erro ao deletar link");
+
+      setLinks((prevLinks) => prevLinks.filter((l) => l.id !== id));
+    } catch (error) {
+      console.error("Erro ao deletar link", error);
+    }
+  }
+
   return (
     <Sidebar className="bg-gradient-to-b from-[#0a0f1a] to-[#1a1f2e] text-white shadow-2xl">
       <SidebarContent>
@@ -37,21 +92,48 @@ export function AppSidebar() {
                   </span>
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent className="mt-2 w-full bg-[#0f1522] border border-white/10 shadow-xl p-2">
-                  <DropdownMenuSeparator className="bg-white/10 my-1" />
-                  
-                  {/* <DropdownMenuItem className="px-3 py-2 rounded-lg hover:bg-white/10 cursor-pointer">
-                    Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="px-3 py-2 rounded-lg hover:bg-white/10 cursor-pointer">
-                    Billing
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="px-3 py-2 rounded-lg hover:bg-white/10 cursor-pointer">
-                    Team
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="px-3 py-2 rounded-lg hover:bg-white/10 cursor-pointer">
-                    Subscription
-                  </DropdownMenuItem> */}
+                <DropdownMenuContent className="mt-2 bg-[#0f1522] overflow-auto max-h-[500px] border border-white/10 shadow-xl">
+
+                  {loading && (
+                    <div className="text-center px-4 py-2 text-gray-400 rounded flex flex-col justify-center items-center gap-2 border-dashed border-1 border-gray-400">
+                      <span>
+                        <Search />
+                      </span>
+                      Buscando Link...
+                    </div>
+                  )}
+
+                  {!loading && links.length === 0 && (
+                    <div className="text-center px-4 py-2 text-gray-400 rounded flex flex-col justify-center items-center gap-2 border-dashed border-1 border-gray-400">
+                      <span>
+                        <FileWarning />
+                      </span>
+                      Nenhum link encontrado
+                    </div>
+                  )}
+
+                  {!loading &&
+                    links.length > 0 &&
+                    links.map((link) => (
+                      <div key={link.id} className="flex flex-col p-2 gap-2">
+                        <DropdownMenuItem className="flex justify-between items-center p-2 transition-all duration-300 ease-in-out hover:bg-white/10 hover:text-blue-400 hover:underline">
+                          <a
+                            href={link.original}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {link.shortedNameLink}/{link.shortedCode}
+                          </a>
+
+                          <button
+                            onClick={() => DeleteLink(link.id)}
+                            className="cursor-pointer ml-2 text-red-400 hover:text-red-600"
+                          >
+                            <X />
+                          </button>
+                        </DropdownMenuItem>
+                      </div>
+                    ))}
                 </DropdownMenuContent>
               </DropdownMenu>
             </SidebarMenu>

@@ -43,7 +43,7 @@ export const GetLinks: React.FC<GetLinksProps> = ({ close }) => {
 
   return (
     <>
-      <div className="bg-gray-800 p-4 md:p-6 lg:p-8">
+      <div className="bg-gray-800 p-4">
         <section className="flex flex-col gap-4 md:gap-6 max-w-xl md:max-w-2xl lg:max-w-4xl mx-auto">
             <button onClick={close}>X</button>
           <h1 className="text-white text-2xl md:text-3xl font-bold">
