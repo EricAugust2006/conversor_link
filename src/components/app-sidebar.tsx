@@ -42,7 +42,6 @@ export function AppSidebar() {
           },
         });
         if (!res.ok) throw new Error("Erro ao buscar links");
-
         const data = await res.json();
         setLinks(Array.isArray(data.links) ? data.links : []);
       } catch (error) {
@@ -80,10 +79,10 @@ export function AppSidebar() {
             🌐 Meus Links
           </SidebarGroupLabel>
 
-          <SidebarGroupContent className="mt-6">
-            <SidebarMenu>
+          <SidebarGroupContent className="mt-6 ">
+            <SidebarMenu className="">
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center justify-between gap-2 px-3 py-2 w-full rounded-lg bg-white/10 hover:bg-white/20 transition-colors font-medium cursor-pointer">
+                <DropdownMenuTrigger className="active:scale-95 flex items-center justify-between gap-2 px-3 py-2 w-full rounded-lg bg-white/10 hover:bg-white/20 transition-colors font-medium cursor-pointer">
                   <span className="flex items-center justify-center gap-6">
                     <span className="border-dashed border-2 border-white/10 p-2 rounded-full">
                       <Link className="w-5 h-5" />
@@ -93,9 +92,8 @@ export function AppSidebar() {
                 </DropdownMenuTrigger>
 
                 <DropdownMenuContent className="mt-2 bg-[#0f1522] overflow-auto max-h-[500px] border border-white/10 shadow-xl">
-
                   {loading && (
-                    <div className="text-center px-4 py-2 text-gray-400 rounded flex flex-col justify-center items-center gap-2 border-dashed border-1 border-gray-400">
+                    <div className="transition-all duration-300 ease-in-out  text-center px-4 py-2 text-gray-400 rounded flex flex-col justify-center items-center gap-2 border-dashed border-1 border-gray-400">
                       <span>
                         <Search />
                       </span>

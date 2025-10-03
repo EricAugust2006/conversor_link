@@ -37,13 +37,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <>
       <html>
         <body
-          className={`bg-black text-white font-sans overflow-hidden ${geistSans.variable} ${geistMono.variable} `}
+          className={` text-white font-sans overflow-hidden ${geistSans.variable} ${geistMono.variable} `}
         >
           <main>
             <SidebarProvider>
               <AppSidebar />
-              <div className="h-screen bg-[#000026] p-2 ">
-                <SidebarTrigger className="flex-1  cursor-pointer" />
+              <div className=" bg-[#020012]/80 h-screen  p-2 ">
+                <SidebarTrigger className="active:scale-95 flex-1  cursor-pointer" />
               </div>
               {children}
             </SidebarProvider>
