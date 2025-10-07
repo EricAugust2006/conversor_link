@@ -10,6 +10,17 @@ export async function POST(request: NextRequest) {
     if (!linkOriginal || !linkNomeEncurtar || !codeEncurtar)
       return new Response("Link Invalido", { status: 400 });
 
+    const linkExisting = await prisma.link.findFirst({
+      where: {
+        OR: [{ original: linkOriginal }, { shortedNameLink: linkNomeEncurtar }],
+      },
+    });
+
+    if (linkExisting) {
+      console.log("Link ja cadastrado");
+      return NextResponse.json("Link ja cadastrado", { status: 400 });
+    }
+
     const newLink = await prisma.link.create({
       data: {
         original: linkOriginal,
@@ -34,10 +45,9 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const links = await prisma.link.findMany();
-
     return NextResponse.json({ links }, { status: 200 });
   } catch (err) {
-    console.error("Erro ao buscar link", err);
+    console.error("Erro ao buscar link:", err);
     return NextResponse.json(
       { error: "Erro ao buscar link: Internal Server Error" },
       { status: 500 }

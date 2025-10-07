@@ -25,7 +25,7 @@ export const GetLinks: React.FC<GetLinksProps> = ({ close }) => {
             "Content-Type": "application/json",
           },
         });
-        if (!res.ok) throw new Error("Erro ao buscar links");
+        if (!res) throw new Error("Erro ao buscar links");
 
         const data = await res.json();
         console.log("Retornou:", data);

@@ -17,6 +17,7 @@ datasource db {
 model Link {
   id String @id @default(cuid())
   original String
+  shortedNameLink String
   shortedCode String @unique
   createdAt DateTime @default(now())
 }

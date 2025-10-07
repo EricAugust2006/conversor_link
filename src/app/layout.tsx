@@ -1,3 +1,5 @@
+
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -42,7 +44,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <main>
             <SidebarProvider>
               <AppSidebar />
-              <div className=" bg-[#020012]/80 h-screen  p-2 ">
+              <div className="bg-black h-screen p-2  ">
                 <SidebarTrigger className="active:scale-95 flex-1  cursor-pointer" />
               </div>
               {children}

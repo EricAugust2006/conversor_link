@@ -1,53 +1,82 @@
 "use client";
 
 import Input from "@/components/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Code, Slash } from "lucide-react";
+import { Mensagem } from "@/components/mensagem";
 
 interface FormProps {
   linkOriginal: string;
   linkNomeEncurtar: string;
   codeEncurtar: string;
 }
+type MensagemType = "sucesso" | "erro";
 
 export default function Form() {
+  const [formSucessSubmit, setFormSucessSubmit] = useState(false);
+  const [mensagem, setMensagem] = useState<string>("");
+  const [mensagemTipo, setMensagemTipo] = useState<MensagemType | null>(null);
+
   const [loading, setLoading] = useState(false);
-  const [success, setSucess] = useState(false);
+  const [Success, setSucess] = useState(false);
   const [data, setData] = useState({
     linkOriginal: "",
     linkNomeEncurtar: "",
     codeEncurtar: "",
   } as FormProps);
 
+  useEffect(() => {
+    if (mensagemTipo) {
+      const timer = setTimeout(() => setMensagemTipo(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [mensagemTipo]);
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
+    setMensagemTipo(null);
 
     if (
       !data.linkOriginal.startsWith("http://") &&
       !data.linkOriginal.startsWith("https://")
     ) {
       alert("Insira um link válido! (ex: https://example.com)");
+      setLoading(false);
+      return;
+    }
+
+    if (!data.linkOriginal || !data.linkNomeEncurtar || !data.codeEncurtar) {
+      alert("Preencha todos os campos!");
+      setLoading(false);
       return;
     }
 
     try {
-      const formData = await fetch("/api/url", {
+      const response = await fetch("/api/url", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      const res: FormProps = await formData.json();
-      console.log(
-        `Link Encurtado:, ${res.linkNomeEncurtar}/${res.codeEncurtar}`
-      );
-      setSucess(true);
-      return res;
-    } catch (error) {
-      console.log(`Erro ao criar link: ${error}`);
-      setSucess(false);
+
+      const res = await response.json();
+
+      if (!response.ok) {
+        setMensagemTipo("erro");
+        setMensagem("Erro ao gerar link!");
+        return;
+      }
+
+      console.log(res);
+      console.log(`${res.shortedNameLink}/${res.shortedCode}`);
+      setMensagemTipo("sucesso");
+      setMensagem(`Link gerado: ${res.shortedNameLink}/${res.shortedCode}`);
+      
+      setData({ linkOriginal: "", linkNomeEncurtar: "", codeEncurtar: "" });
+    } catch (err) {
+      console.log("Erro:", err);
+      setMensagemTipo("erro");
+      setMensagem("Erro ao gerar link!");
     } finally {
       setLoading(false);
     }
@@ -106,6 +135,8 @@ export default function Form() {
           {loading ? "Gerando link..." : "Gerar link"}
         </button>
       </form>
+
+      {mensagemTipo && <Mensagem type={mensagemTipo} mensagem={mensagem} />}
     </div>
   );
 }
