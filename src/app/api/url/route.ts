@@ -12,7 +12,11 @@ export async function POST(request: NextRequest) {
 
     const linkExisting = await prisma.link.findFirst({
       where: {
-        OR: [{ original: linkOriginal }, { shortedNameLink: linkNomeEncurtar }],
+        OR: [
+          { original: linkOriginal },
+          { shortedNameLink: linkNomeEncurtar },
+          { shortedCode: codeEncurtar },
+        ],
       },
     });
 

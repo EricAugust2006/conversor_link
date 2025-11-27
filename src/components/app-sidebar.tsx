@@ -82,11 +82,11 @@ export function AppSidebar() {
             Links
           </SidebarGroupLabel>
           <hr />
-          <SidebarGroupContent className="mt-6 ">
-            <SidebarMenu className="">
+          <SidebarGroupContent className="mt-6  text-white">
+            <SidebarMenu className=" text-white">
               <DropdownMenu>
-                <DropdownMenuTrigger className="active:scale-95 flex items-center justify-between gap-2 px-3 py-2 w-full rounded-lg bg-white/10 hover:bg-white/20 transition-colors font-medium cursor-pointer">
-                  <span className="flex items-center justify-center gap-6">
+                <DropdownMenuTrigger className="active:scale-95 flex text-white items-center justify-between gap-2 px-3 py-2 w-full rounded-lg bg-white/10 hover:bg-white/20 transition-colors font-medium cursor-pointer  text-white">
+                  <span className="flex text-white  items-center justify-center gap-6">
                     <span className="border-dashed border-2 border-white/10 p-2 rounded-full">
                       <Unlink2 className="w-5 h-5" />
                     </span>
