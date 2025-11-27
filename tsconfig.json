@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
-      "typeRoots": [
-      "node_modules/@types",
-      "path/to/your/types"
-    ],
+    "typeRoots": ["node_modules/@types", "path/to/your/types"],
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -23,7 +20,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
