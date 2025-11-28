@@ -57,7 +57,7 @@ export function AppSidebar() {
 
     const interval = setInterval(() => {
       LinksList();
-    }, 2000);
+    }, 60000);
 
     return () => clearInterval(interval);
   }, []);
