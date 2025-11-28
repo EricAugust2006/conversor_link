@@ -54,6 +54,12 @@ export function AppSidebar() {
       }
     }
     LinksList();
+
+    const interval = setInterval(() => {
+      LinksList();
+    }, 2000);
+
+    return () => clearInterval(interval);
   }, []);
 
   async function DeleteLink(id: string) {
