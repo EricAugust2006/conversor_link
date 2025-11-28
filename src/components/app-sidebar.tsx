@@ -42,7 +42,7 @@ export function AppSidebar() {
           },
         });
         if (!res.ok) {
-          alert("Ocorreu um erro ao buscar os links");
+          console.log("Ocorreu um erro ao buscar os links");
         }
         const data = await res.json();
         setLinks(Array.isArray(data.links) ? data.links : []);
